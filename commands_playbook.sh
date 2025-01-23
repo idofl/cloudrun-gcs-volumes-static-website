@@ -29,4 +29,4 @@ gsutil rsync -R local-dir gs://$BUCKET
 #Creating the Cloud Run Service
 #Ensure you are in the root of this directory
 #This will create a Cloud Run service with name cloudrun-static-demo that will be accessible from anywhere
-gcloud run deploy cloudrun-static-demo --source . --execution-environment gen2 --allow-unauthenticated --service-account cr-identity --set-env-vars=BUCKET=$BUCKET --port 80
+gcloud run deploy cloudrun-static-demo --source . --execution-environment gen2 --allow-unauthenticated --service-account cr-identity --add-volume name=gcs,type=cloud-storage,bucket=$BUCKET --add-volume-mount volume=gcs,mount-path=/mnt/gcs
