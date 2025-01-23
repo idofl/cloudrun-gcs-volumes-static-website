@@ -1,17 +1,18 @@
 # Use the official Nginx image.
 # https://hub.docker.com/_/nginx
 FROM nginx:latest
-COPY default.conf /etc/nginx/conf.d/
 
-# Set fallback mount directory
-ENV MNT_DIR /mnt/gcs
+# Install tini
+RUN apt-get update && apt-get install -y tini && \
+    apt-get clean
 
-# Copy local code to the container image.
-ENV APP_HOME /app
-WORKDIR $APP_HOME
+COPY default.conf.template /etc/nginx/conf.d/
 
 # Copy local code to the container image.
-COPY . ./
+WORKDIR /app
+
+# Copy local code to the container image.
+COPY run.sh ./
 
 # Ensure the script is executable
 RUN chmod +x /app/run.sh
